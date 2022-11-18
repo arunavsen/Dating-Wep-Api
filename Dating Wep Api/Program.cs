@@ -1,4 +1,6 @@
 using Dating_Wep_Api.Data;
+using Dating_Wep_Api.IRepo;
+using Dating_Wep_Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -13,6 +15,8 @@ builder.Services.AddSwaggerGen();
 
 var connectionstring = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDBContext>(x => x.UseSqlServer(connectionstring));
+
+builder.Services.AddScoped<IAnimal, Animal>();
 
 var app = builder.Build();
 
