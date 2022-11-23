@@ -1,5 +1,6 @@
 ﻿using Dating_Wep_Api.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Dating_Wep_Api.Controllers
 {
@@ -15,17 +16,18 @@ namespace Dating_Wep_Api.Controllers
         }
 
         [HttpGet(Name = "ListOfValues")]
-        public IActionResult GetValues()
+        public async Task<IActionResult> GetValues()
         {
-            return Ok(_context.Values.ToList());
+            var tt = await _context.Values.ToListAsync();
+            return Ok(tt);
         }
 
         [HttpGet("{id}",Name ="OnlySingleValue")]
-        public IActionResult GetValue(int id)
+        public async Task<IActionResult> GetValue(int id)
         {
             if (id is not 0)
             {
-                var value = _context.Values.FirstOrDefault(x => x.Id == id);
+                var value = await _context.Values.FirstOrDefaultAsync(x => x.Id == id);
 
                 if (value == null) 
                 { 

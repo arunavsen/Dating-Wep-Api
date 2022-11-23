@@ -17,6 +17,7 @@ var connectionstring = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDBContext>(x => x.UseSqlServer(connectionstring));
 
 builder.Services.AddScoped<IAnimal, Animal>();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -30,5 +31,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.Run();
