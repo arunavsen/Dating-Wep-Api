@@ -1,4 +1,6 @@
 using Dating_Wep_Api.Data;
+using Dating_Wep_Api.Data.IRepository;
+using Dating_Wep_Api.Data.Repository;
 using Dating_Wep_Api.IRepo;
 using Dating_Wep_Api.Models;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,7 @@ var connectionstring = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDBContext>(x => x.UseSqlServer(connectionstring));
 
 builder.Services.AddScoped<IAnimal, Animal>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddCors();
 
 var app = builder.Build();
