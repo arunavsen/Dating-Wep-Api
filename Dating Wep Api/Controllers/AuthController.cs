@@ -17,7 +17,7 @@ namespace Dating_Wep_Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody]UserForRegisterDTO userForRegisterDTO) 
+        public async Task<IActionResult> Register(UserForRegisterDTO userForRegisterDTO) 
         {
             var username = userForRegisterDTO.username;
 
