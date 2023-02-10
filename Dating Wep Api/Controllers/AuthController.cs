@@ -77,9 +77,15 @@ namespace Dating_Wep_Api.Controllers
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
+            var authToken = new
+            {
+                Token = tokenString
+            };
+
             #endregion
 
-            return Ok(tokenString);
+            
+            return Ok(authToken);
         }
 
     }

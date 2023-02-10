@@ -1,4 +1,5 @@
 ﻿using Dating_Wep_Api.IRepo;
+using Dating_Wep_Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dating_Wep_Api.Controllers
