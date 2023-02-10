@@ -16,8 +16,7 @@ namespace Dating_Wep_Api.Controllers
         {
             _context = context;
         }
-
-        [HttpGet(Name = "ListOfValues")]
+       
         public async Task<IActionResult> GetValues()
         {
             var tt = await _context.Values.ToListAsync();
