@@ -47,45 +47,55 @@ namespace Dating_Wep_Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDTO userForLoginDTO)
         {
-            var userFromRepo = await _repo.Login(userForLoginDTO.Username, userForLoginDTO.Password);
-
-            if (userFromRepo == null)
+            try
             {
-                return Unauthorized();
+                //throw new Exception("Sorry! I have no right!");
+
+                var userFromRepo = await _repo.Login(userForLoginDTO.Username, userForLoginDTO.Password);
+
+                if (userFromRepo == null)
+                {
+                    return Unauthorized();
+                }
+
+                #region How to create token after login
+            
+                var claims = new[] {
+                    new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
+                    new Claim(ClaimTypes.Name, userFromRepo.Username)
+                };
+
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("Appsettings:Token").Value));
+
+                var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
+
+                var tokenDescriptor = new SecurityTokenDescriptor {
+                            Subject = new ClaimsIdentity(claims),
+                            Expires = DateTime.Now.AddMinutes(120),
+                            SigningCredentials = signingCredentials
+                            };
+
+                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+
+                var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+                var authToken = new
+                {
+                    Token = tokenString
+                };
+
+                #endregion
+
+            
+                return Ok(authToken);
             }
-
-            #region How to create token after login
-            
-            var claims = new[] {
-                new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-                new Claim(ClaimTypes.Name, userFromRepo.Username)
-            };
-
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("Appsettings:Token").Value));
-
-            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
-
-            var tokenDescriptor = new SecurityTokenDescriptor {
-                        Subject = new ClaimsIdentity(claims),
-                        Expires = DateTime.Now.AddMinutes(120),
-                        SigningCredentials = signingCredentials
-                        };
-
-            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-            var authToken = new
+            catch
             {
-                Token = tokenString
-            };
 
-            #endregion
-
-            
-            return Ok(authToken);
+                return StatusCode(500,"Computer really says no!");
+            }
         }
 
     }

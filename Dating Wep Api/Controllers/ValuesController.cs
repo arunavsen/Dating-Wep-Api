@@ -16,13 +16,16 @@ namespace Dating_Wep_Api.Controllers
         {
             _context = context;
         }
-       
+
+        [AllowAnonymous]
+        [HttpGet(Name = "ListOfValues")]
         public async Task<IActionResult> GetValues()
         {
             var tt = await _context.Values.ToListAsync();
             return Ok(tt);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}",Name ="OnlySingleValue")]
         public async Task<IActionResult> GetValue(int id)
         {

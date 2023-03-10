@@ -1,12 +1,15 @@
 using Dating_Wep_Api.Data;
 using Dating_Wep_Api.Data.IRepository;
 using Dating_Wep_Api.Data.Repository;
+using Dating_Wep_Api.Helpers;
 using Dating_Wep_Api.IRepo;
 using Dating_Wep_Api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Net;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -74,8 +77,25 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.UseExceptionHandler(builder => {
+        builder.Run(async context => {
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+            var error = context.Features.Get<IExceptionHandlerFeature>();
+
+            if (error != null)
+            {
+                context.Response.AddApplicationError(error.Error.Message);
+                await context.Response.WriteAsync(error.Error.Message);
+            }
+        });
+    });
 }
 
 app.UseAuthentication();
