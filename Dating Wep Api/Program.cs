@@ -27,6 +27,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(x => x.UseSqlServer(connecti
 
 builder.Services.AddScoped<IAnimal, Animal>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IDatingRepository, DatingRepository>();
 builder.Services.AddCors();
 
 #region How to add Authorize button in Sweager
