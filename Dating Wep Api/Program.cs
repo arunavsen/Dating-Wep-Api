@@ -38,6 +38,7 @@ builder.Services.AddScoped<IAnimal, Animal>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IDatingRepository, DatingRepository>();
 builder.Services.AddCors();
+builder.Services.AddAutoMapper(typeof(DatingRepository).Assembly);
 
 #region How to add Authorize button in Sweager
 

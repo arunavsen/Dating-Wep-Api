@@ -2,7 +2,7 @@
 
 namespace Dating_Wep_Api.DTO
 {
-    public class UserForDetails
+    public class UserForDetailsDTO
     {
         public int Id { get; set; }
         public string Username { get; set; }
