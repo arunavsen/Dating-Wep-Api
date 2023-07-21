@@ -21,6 +21,11 @@ namespace Dating_Wep_Api.Data.Repository
             _db.Remove(entity);
         }
 
+        public async Task<Photo> GetPhoto(int id)
+        {
+            return await _db.Photos.FirstAsync(p => p.Id == id);
+        }
+
         public async Task<User> GetUser(int id)
         {
             var user = await _db.Users.Include(p => p.Photos).FirstOrDefaultAsync(x => x.Id == id);

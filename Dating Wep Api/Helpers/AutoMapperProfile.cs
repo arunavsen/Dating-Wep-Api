@@ -16,6 +16,8 @@ namespace Dating_Wep_Api.Helpers
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalcuateAge()));
             CreateMap<Photo, PhotosForDetailsDTO>();
             CreateMap<UserForUpdateDTO, User>();
+            CreateMap<Photo, PhotoForReturnDto>();
+            CreateMap<PhotoForCreationDto, Photo>();
         }
     }
 }

@@ -9,5 +9,6 @@ namespace Dating_Wep_Api.Data.IRepository
         Task<bool> SaveAll();
         Task<IEnumerable<User>> GetUsers();
         Task<User> GetUser(int id);
+        Task<Photo> GetPhoto(int id);
     }
 }
